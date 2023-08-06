@@ -1,0 +1,65 @@
+# Hermes Application
+
+Hermes is a .NET 7.0 application which is based on clean architecture.
+
+## Prerequisites for Develop and run on IDE
+
+Before running the application, ensure you have the following dependencies installed:
+
+- .NET 7.0 SDK
+- Docker (for running the application with containers)
+- Redis (if running outside of Docker)
+- MySQL
+
+## Getting Started
+
+To get started with the Hermes application, follow these steps:
+
+1. Clone the repository:
+
+   ```shell
+   git clone git.snappfood.ir/javid.asadi/Hermes.git
+
+   ```
+
+2. Start the application:
+
+- With Docker: docker-compose -f docker-compose.dev.yaml up -d
+- With Dotnet CLI: dotnet run --project Hermes.Host
+
+3. Access the application:
+
+Once the application is running, you can access it using the following URL:
+Using Docker ==> http://localhost:8080/Swagger/index.html
+Using Dotnet Cli ==> https://localhost:7053;http://localhost:5022
+
+## Configuration
+
+The application's configuration can be customized in the .env file which is in "Hermes.API" application. Adjust the connection strings, Redis settings.
+
+## Clean up:
+
+To stop the application and remove the containers, press Ctrl + C in the terminal window running the application or run docker-compose .\docker-compose.dev.yaml down.
+
+## Architecture
+
+The Hermes application is based on clean architecture, which promotes modularity and separation of concerns. The architecture is organized into the following layers:
+
+1. **API**: This layer serves as the entry point of the application and handles incoming HTTP requests. It routes the requests to the appropriate controllers in the Business Logic Layer.
+
+2. **Infrastructure**: 
+
+3. **Application**: 
+
+4. **Domain**: 
+
+## Useful command
+
+- Add migration file:
+
+**dotnet ef migrations add "Migration file name"  -o Persistance\EFCore\Migrations --startup-project .\src\API\API.csproj --project .\src\Infrastructure\Infrastructure.csproj --context HermesDbContext**
+
+- Update database:
+
+**dotnet ef database update --startup-project .\src\API\API.csproj --project .\src\Infrastructure\Infrastructure.csproj --context HermesDbContext**
+
