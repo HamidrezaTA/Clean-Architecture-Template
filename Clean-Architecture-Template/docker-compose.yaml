@@ -1,27 +1,123 @@
 version: "3.9"
+
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: hermes
-    ports:
-      - "8090:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Staging
-    depends_on:
-      - mysql
-      - redis
-    restart: always
-  mysql:
-    image: mysql:latest
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: myStrongP@ssw0rd
-    ports:
-      - "3306:3306"
-  redis:
-    image: redis:latest
-    container_name: redis
-    ports:
-      - "6379:6379"
+    #################### app ####################
+    app:
+        build:
+            context: .
+            dockerfile: .docker/dotnet/${APP_ENV:-Production}.Dockerfile
+        ports:
+            - "8090:80"
+        environment:
+            TZ: ${APP_TZ:-Asia/Tehran}
+            ASPNETCORE_ENVIRONMENT: ${APP_ENV:-Production}
+        restart: unless-stopped
+        logging:
+            options:
+                max-size: "50m"
+        depends_on:
+            - mysql
+            - redis
+        networks:
+            - app-network
+
+    #################### mysql ####################
+    mysql:
+        # image: mariadb:11.1-rc-jammy
+        image: mysql:8.0-debian
+        expose:
+            - ${DB_PORT:-3306}
+        environment:
+            TZ: ${APP_TZ:-Asia/Tehran}
+            MYSQL_RANDOM_ROOT_PASSWORD: yes
+            MYSQL_DATABASE: ${DB_DATABASE:-clean_architecture}
+            MYSQL_USER: ${DB_USERNAME:-admin}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-admin}
+        restart: unless-stopped
+        logging:
+            options:
+                max-size: "50m"
+        volumes:
+            - mysql-data:/var/lib/mysql/
+        networks:
+            - app-network
+            - phpmyadmin-network
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+            # interval: 30s
+            timeout: 10s
+            retries: 6
+
+    #################### redis ####################
+    redis:
+        image: redis:7.2-rc
+        expose:
+            - ${REDIS_PORT:-6379}
+        hostname: ${REDIS_HOST:-127.0.0.1}
+        environment:
+            TZ: ${APP_TZ:-Asia/Tehran}
+        restart: unless-stopped
+        logging:
+            options:
+                max-size: "50m"
+        # command: sh -c 'if [ -n "${REDIS_PASSWORD:-1234}" ]; then redis-server --requirepass "${REDIS_PASSWORD:-1234}"; else redis-server; fi'
+        networks:
+            - app-network
+            - redis-commander-network
+        healthcheck:
+            test: [ "CMD", "redis-cli", "ping" ]
+            # interval: 30s
+            timeout: 5s
+            retries: 6
+
+    ########################### PHPMYADMIN ###########################
+    phpmyadmin:
+        image: phpmyadmin:5.2-apache
+        container_name: phpmyadmin
+        restart: unless-stopped
+        tty: true
+        profiles: [ "phpmyadmin" ]
+        ports:
+            - "8080:80"
+        logging:
+            options:
+                max-size: "50m"
+        environment:
+            TZ: ${APP_TZ:-Asia/Tehran}
+            PMA_HOST: mysql
+            PMA_PORT: ${DB_PORT:-3306}
+        networks:
+            - phpmyadmin-network
+
+    ########################### REDIS-COMMANDER ###########################
+    redis-commander:
+        image: rediscommander/redis-commander:latest
+        container_name: redis-commander
+        restart: unless-stopped
+        tty: true
+        profiles: [ "redis-commander" ]
+        ports:
+            - "8081:8081"
+        environment:
+            TZ: "Asia/Tehran"
+            REDIS_HOSTS: local:${REDIS_HOST:-127.0.0.1}:${REDIS_PORT:-6379}
+            # REDIS_PASSWORD: ${REDIS_PASSWORD:-1234}
+        networks:
+            - redis-commander-network
+
+# Networks
+networks:
+    app-network:
+        driver: bridge
+        external: false
+    phpmyadmin-network:
+        driver: bridge
+        external: false
+    redis-commander-network:
+        driver: bridge
+        external: false
+
+# Volumes
+volumes:
+    mysql-data:
+        driver: local
