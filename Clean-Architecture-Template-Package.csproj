@@ -3,12 +3,13 @@
   <PropertyGroup>
     <!-- The package metadata. Fill in the properties marked as TODO below -->
     <!-- Follow the instructions on https://learn.microsoft.com/en-us/nuget/create-packages/package-authoring-best-practices -->
-    <PackageId>CleanArchitecture.Template</PackageId>
-    <PackageVersion>1.0.2</PackageVersion>
+    <PackageId>Cln.Archtctr.Tmplt</PackageId>
+    <PackageVersion>1.1.0</PackageVersion>
     <Title>Clean Architecture</Title>
     <Authors>Hamidreza Taammoli</Authors>
     <Description>Clean Architecture Template</Description>
     <PackageTags>dotnet-new;clean-architecture;</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
 
     <!-- Keep package type as 'Template' to show the package as template package on nuget.org and make you template available in dotnet new search.-->
     <PackageType>Template</PackageType>
@@ -16,6 +17,7 @@
     <IncludeContentInPack>true</IncludeContentInPack>
     <IncludeBuildOutput>false</IncludeBuildOutput>
     <ContentTargetFolders>Clean-Architecture-Template</ContentTargetFolders>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -29,6 +31,10 @@
   <ItemGroup>
     <Content Include="Clean-Architecture-Template\**\*" Exclude="Clean-Architecture-Template\**\bin\**;Clean-Architecture-Template\**\obj\**" />
     <Compile Remove="**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Clean-Architecture-Template\README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 </Project>
