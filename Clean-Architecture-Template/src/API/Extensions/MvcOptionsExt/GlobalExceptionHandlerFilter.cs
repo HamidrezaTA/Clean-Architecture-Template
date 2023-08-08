@@ -45,7 +45,7 @@ namespace API.Extensions.MvcOptionsExt
             _result.Error = new Error();
             _result.Error.Code = _errorUniqueCode;
 
-            if (_exception is CustomBaseException customException)
+            if (_exception is BaseHttpException customException)
             {
                 _logger.LogWarning(_exception, $"Message:{_message}, Code:{_errorUniqueCode}");
                 _result.Error.Message = _message;

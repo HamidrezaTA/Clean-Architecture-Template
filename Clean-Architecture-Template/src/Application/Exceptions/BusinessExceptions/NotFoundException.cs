@@ -1,15 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+namespace Application.Exceptions.BusinessExceptions;
 
-namespace Application.Exceptions.BusinessExceptions
+using System.Net;
+
+public class NotFoundException : BaseHttpException
 {
-    public class NotFoundException : CustomBaseException
-    {
-        public NotFoundException(string message, int status) : base(message, status)
-        {
+    public NotFoundException() : base(message: "Data not found!", status: HttpStatusCode.NotFound)
+    { }
 
-        }
-    }
+    public NotFoundException(string message) : base(message: message, status: HttpStatusCode.NotFound)
+    { }
 }
