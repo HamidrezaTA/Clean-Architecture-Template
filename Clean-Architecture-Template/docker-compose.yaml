@@ -6,8 +6,12 @@ services:
         build:
             context: .
             dockerfile: .docker/dotnet/${APP_ENV:-Production}.Dockerfile
+        profiles:
+            - Development
+            - Staging
+            - Production
         ports:
-            - "8090:80"
+            - ${APP_PORT:-8090}:80
         environment:
             TZ: ${APP_TZ:-Asia/Tehran}
             ASPNETCORE_ENVIRONMENT: ${APP_ENV:-Production}
@@ -25,14 +29,15 @@ services:
     mysql:
         # image: mariadb:11.1-rc-jammy
         image: mysql:8.0-debian
-        expose:
-            - ${DB_PORT:-3306}
+        ports:
+            - ${LOCAL_DB_PORT:-}:${DB_PORT:-3306}
         environment:
             TZ: ${APP_TZ:-Asia/Tehran}
             MYSQL_RANDOM_ROOT_PASSWORD: yes
             MYSQL_DATABASE: ${DB_DATABASE:-clean_architecture}
             MYSQL_USER: ${DB_USERNAME:-admin}
             MYSQL_PASSWORD: ${DB_PASSWORD:-admin}
+            MYSQL_TCP_PORT: ${DB_PORT:-3306}
         restart: unless-stopped
         logging:
             options:
@@ -48,11 +53,11 @@ services:
             timeout: 10s
             retries: 6
 
-    #################### redis ####################
+    #################### redis #################### TODO: redis password
     redis:
         image: redis:7.2-rc
         expose:
-            - ${REDIS_PORT:-6379}
+            - ${LOCAL_REDIS_PORT:-}:${REDIS_PORT:-6379}
         hostname: ${REDIS_HOST:-127.0.0.1}
         environment:
             TZ: ${APP_TZ:-Asia/Tehran}
@@ -60,6 +65,7 @@ services:
         logging:
             options:
                 max-size: "50m"
+        command: --port ${REDIS_PORT:-6379}
         # command: sh -c 'if [ -n "${REDIS_PASSWORD:-1234}" ]; then redis-server --requirepass "${REDIS_PASSWORD:-1234}"; else redis-server; fi'
         networks:
             - app-network
@@ -76,7 +82,8 @@ services:
         container_name: phpmyadmin
         restart: unless-stopped
         tty: true
-        profiles: [ "phpmyadmin" ]
+        profiles:
+            - phpmyadmin
         ports:
             - "8080:80"
         logging:
@@ -89,13 +96,14 @@ services:
         networks:
             - phpmyadmin-network
 
-    ########################### REDIS-COMMANDER ###########################
+    ########################### REDIS-COMMANDER ########################### TODO: redis password
     redis-commander:
         image: rediscommander/redis-commander:latest
         container_name: redis-commander
         restart: unless-stopped
         tty: true
-        profiles: [ "redis-commander" ]
+        profiles:
+            - redis-commander
         ports:
             - "8081:8081"
         environment:
