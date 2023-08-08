@@ -8,8 +8,8 @@ public static class PrimaryServicesRegistration
     {
         services.AddControllers(options =>
         {
-            options.AddActionResult();
-            options.AddExceptionHandler();
+            options.Filters.Add<ActionResultFilter>();
+            options.Filters.Add<GlobalExceptionHandlerFilter>();
         });
 
         services.AddEndpointsApiExplorer();
