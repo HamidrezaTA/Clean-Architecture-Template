@@ -1,69 +1,41 @@
+namespace API.Extensions.MvcOptionsExt;
+
+using API.Extensions.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace API.Extensions.MvcOptionsExt
+public class ActionResultFilter : IActionFilter
 {
-    public static class ActionResultOption
+    // TODO: using `is not` is not correct because sometimes we need to return other types like as file
+    // TODO always response is successful
+    // TODO set status code
+    public void OnActionExecuted(ActionExecutedContext context)
     {
-        public static void AddActionResult(this MvcOptions options)
+        if (context.Result is ObjectResult objectResult)
         {
-            options.Filters.Add(typeof(ActionResultFilter));
-        }
-    }
-
-    public class ActionResultFilter : IActionFilter
-    {
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            if (context.Result is ObjectResult objectResult)
+            if (objectResult.Value is not JsonResponse<object>)
             {
-                if (!(objectResult.Value is ActionResultModel<object>))
-                {
-                    var result = new ActionResultModel<object>(true)
-                    {
-                        Result = objectResult.Value
-                    };
-                    context.Result = new ObjectResult(result);
-                }
-            }
-            else if (context.Result is EmptyResult)
-            {
-                var result = new ActionResultModel<string>(true);
-                context.Result = new ObjectResult(result);
+                ForceToJson(context: context, result: objectResult.Value);
             }
         }
-
-        public void OnActionExecuting(ActionExecutingContext context)
+        else if (context.Result is EmptyResult)
         {
-
+            ForceToJson(context: context);
         }
     }
 
-    public class ActionResultModel<T>
+    public void OnActionExecuting(ActionExecutingContext context)
     {
-        public ActionResultModel(bool success = false)
+
+    }
+
+    private void ForceToJson(ActionExecutedContext context, object? result = null)
+    {
+        JsonResponse<object> response = new()
         {
-            Success = success;
-
-            if (!success)
-            {
-                Error = new Error();
-            }
-        }
-
-        public bool Success { get; set; }
-        public T Result { get; set; }
-        public Error Error { get; set; }
-    }
-
-    public class ActionResultModel : ActionResultModel<object>
-    {
-
-    }
-
-    public class Error
-    {
-        public string Message { get; set; }
-        public string Code { get; set; }
+            Success = true,
+            Result = result
+        };
+        context.Result = new ObjectResult(response);
     }
 }
