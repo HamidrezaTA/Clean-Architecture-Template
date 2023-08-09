@@ -1,16 +1,16 @@
 using Application.DTOs;
 using Application.Services.Interfaces;
-using Domain.Repositories.UnitOfWork;
+using Domain.Repositories;
 
 namespace Application.Services.Implementations
 {
     public class SampleService : ISampleService
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly ISampleRepository _sampleRepository;
 
-        public SampleService(IUnitOfWork unitOfWork)
+        public SampleService(ISampleRepository sampleRepository)
         {
-            _unitOfWork = unitOfWork;
+            _sampleRepository = sampleRepository;
         }
 
         public Task CreateSample(SampleDto link)

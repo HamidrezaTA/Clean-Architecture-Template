@@ -8,6 +8,13 @@ namespace Infrastructure.Repositories
     public class EFBaseRepository<T> : IBaseRepository<T> where T : BaseEntity
     {
         private readonly DbSet<T> _dbSet;
+        private readonly DbContext _dbContext;
+
+        public EFBaseRepository(DbContext dbContext)
+        {
+            _dbContext = dbContext;
+            _dbSet = dbContext.Set<T>();
+        }
 
         public EFBaseRepository(SampleDbContext sampleDbContext)
         {
@@ -54,6 +61,11 @@ namespace Infrastructure.Repositories
         public void Update(T entity)
         {
             _dbSet.Update(entity);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
