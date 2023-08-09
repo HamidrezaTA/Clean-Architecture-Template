@@ -1,64 +1,84 @@
+namespace API.Extensions.MvcOptionsExt;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using API.Extensions.Response;
 using Application.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace API.Extensions.MvcOptionsExt
+public class GlobalExceptionHandlerFilter : ExceptionFilterAttribute
 {
-    public static class ActionExceptionHandlerOption
+    private readonly ILogger<GlobalExceptionHandlerFilter> _logger;
+    private readonly IWebHostEnvironment _env;
+    private int _statusCode = 500;
+    private string _exceptionMessage = "Internal Server Error";
+    private readonly List<Type> _doNotReport = new()
     {
-        public static void AddExceptionHandler(this MvcOptions options)
-        {
-            options.Filters.Add(typeof(GlobalExceptionHandlerFilter));
-        }
+        // typeof(NotFoundException)
+    };
+
+    public GlobalExceptionHandlerFilter(ILogger<GlobalExceptionHandlerFilter> logger, IWebHostEnvironment env)
+    {
+        _logger = logger;
+        _env = env;
     }
 
-    public class GlobalExceptionHandlerFilter : ExceptionFilterAttribute
+    public override Task OnExceptionAsync(ExceptionContext context)
     {
-        private readonly ILogger<GlobalExceptionHandlerFilter> _logger;
-        readonly IWebHostEnvironment _env;
+        Render(context: context);
+        return base.OnExceptionAsync(context: context);
+    }
 
-        public GlobalExceptionHandlerFilter(ILogger<GlobalExceptionHandlerFilter> logger,
-            IWebHostEnvironment env)
+    public override void OnException(ExceptionContext context)
+    {
+        Render(context: context);
+        base.OnException(context: context);
+    }
+
+    private void Render(ExceptionContext context)
+    {
+        if (_env.IsDevelopment())
+            return;
+
+        Exception catchException = context.Exception;
+        string? exceptionCode = Logger(exception: catchException);
+
+        if (catchException is CustomBaseException httpException)
         {
-            _logger = logger;
-            _env = env;
+            _statusCode = httpException.Status;
+            _exceptionMessage = catchException.InnerException?.Message ?? catchException.Message;
         }
 
-        public override Task OnExceptionAsync(ExceptionContext context)
+        JsonResponse<object> _result = new()
         {
-            Exception(context);
-            return base.OnExceptionAsync(context);
-        }
-
-        void Exception(ExceptionContext context)
-        {
-            var _exception = context.Exception;
-            var _message = _exception.InnerException?.Message ?? _exception.Message;
-
-            if (_env.IsDevelopment())
-                return;
-
-            var _errorUniqueCode = Guid.NewGuid().ToString();
-            var _result = new ActionResultModel();
-            _result.Success = false;
-            _result.Result = null;
-            _result.Error = new Error();
-            _result.Error.Code = _errorUniqueCode;
-
-            if (_exception is CustomBaseException customException)
+            Success = false,
+            Result = null,
+            Error = new ErrorModel
             {
-                _logger.LogWarning(_exception, $"Message:{_message}, Code:{_errorUniqueCode}");
-                _result.Error.Message = _message;
-                context.HttpContext.Response.StatusCode = customException.Status;
+                Message = _exceptionMessage,
+                Code = exceptionCode
             }
-            else
-            {
-                _logger.LogError(_exception, $"Message:{_message}, Code:{_errorUniqueCode}");
-                _result.Error.Message = "Internal Server Error";
-                context.HttpContext.Response.StatusCode = 500;
-            }
+        };
 
-            context.Result = new ObjectResult(_result);
+        context.HttpContext.Response.StatusCode = _statusCode;
+        context.Result = new ObjectResult(_result);
+    }
+
+    // TODO: we need to separate logs by level and channels
+    private string? Logger(Exception exception)
+    {
+        string? exceptionCode = null;
+
+        Type exceptionType = exception.GetType();
+        if (!_doNotReport.Any(type => type.IsAssignableFrom(exceptionType)))
+        {
+            exceptionCode = Guid.NewGuid().ToString();
+            _logger.LogError(exception, "Code: {exceptionCode}", exceptionCode);
         }
+
+        return exceptionCode;
     }
 }
