@@ -46,7 +46,7 @@ public class GlobalExceptionHandlerFilter : ExceptionFilterAttribute
         Exception catchException = context.Exception;
         string? exceptionCode = Logger(exception: catchException);
 
-        if (catchException is CustomBaseException httpException)
+        if (catchException is BaseHttpException httpException)
         {
             _statusCode = httpException.Status;
             _exceptionMessage = catchException.InnerException?.Message ?? catchException.Message;
