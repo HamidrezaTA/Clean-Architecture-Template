@@ -1,41 +1,32 @@
-using Application.Mapper;
-using Infrastructure.Mapper;
-using API.Extensions.MvcOptionsExt;
 using API.Extensions.ServiceCollectionExt;
-using Infrastructure.Caching.Redis;
-using Infrastructure.Persistance.EFCore;
 using Infrastructure.Repositories.UnitOfWork;
+using Application.Exceptions.RuntimeExceptions;
+using Infrastructure.Persistance.EFCore;
+using Infrastructure.Caching.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var mySqlConnectionString = builder.Configuration.GetConnectionString("MySql");
-var redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+// builder.Services.AddConnectionStrings(config: builder.Configuration);
+string? mySqlConnectionString = builder.Configuration.GetConnectionString("MySql");
+string? redisConnectionString = builder.Configuration.GetConnectionString("Redis");
+
+if (mySqlConnectionString == null || redisConnectionString == null)
+{
+    throw new ConnectionStringException();
+}
 
 //EF Core
 builder.Services.AddEFCoreMySqlDbContext(mySqlConnectionString);
-
 //Redis
 builder.Services.AddRedis(redisConnectionString);
 
+builder.Services.AddMapperServices();
+builder.Services.AddRepositoryServices();
+builder.Services.AddBusinessServices();
+builder.Services.AddPrimaryServices();
+
 //UnitOfWork
 builder.Services.AddEfUnitOfWork();
-
-//Mapper
-builder.Services.AddSingleton<IMapper, CustomMapper>();
-
-//Action Result and Global exceptions
-builder.Services.AddControllers(options =>
-{
-    options.AddActionResult();
-    options.AddExceptionHandler();
-});
-
-// Add services to the container.
-builder.Services.AddBusinessServices();
-
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
