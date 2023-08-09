@@ -3,6 +3,7 @@ MIGRATION_NAME := $(shell date +"%Y%m%d%H%M%S")
 API_CSPROJ = src/API/API.csproj
 INFRA_CSPROJ = src/Infrastructure/Infrastructure.csproj
 MIGRATION_PATH = Persistance/EFCore/Migrations
+include .env
 
 ################## Migration ##################
 migration-add:
@@ -18,9 +19,17 @@ migration-rollback:
 
 ################## Installation ##################
 install:
-	docker compose up -d
+ifeq ($(findstring $(APP_ENV),Development Local),)
+	docker compose --profile $(APP_ENV) up -d
+else
+	LOCAL_DB_PORT=$(DB_PORT) LOCAL_REDIS_PORT=$(REDIS_PORT) docker compose --profile $(APP_ENV) up -d
+endif
 install-with-gui:
-	docker compose --profile phpmyadmin --profile redis-commander up -d
+ifeq ($(findstring $(APP_ENV),Development Local),)
+	docker compose --profile $(APP_ENV) --profile phpmyadmin --profile redis-commander up -d
+else
+	LOCAL_DB_PORT=$(DB_PORT) LOCAL_REDIS_PORT=$(REDIS_PORT) docker compose --profile $(APP_ENV) --profile phpmyadmin --profile redis-commander up -d
+endif
 
 ################## phony ##################
 .PHONY: migration-create migration-up migration-down install install-with-gui
