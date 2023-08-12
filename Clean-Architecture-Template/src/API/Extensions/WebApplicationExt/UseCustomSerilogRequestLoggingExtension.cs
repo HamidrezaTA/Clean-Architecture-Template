@@ -1,12 +1,11 @@
+namespace API.Extensions.WebApplicationExt;
+
 using Serilog;
 
-namespace API.Extensions.WebApplicationExt
+public static class UseCustomSerilogRequestLoggingExtension
 {
-    public static class UseCustomSerilogRequestLoggingExtension
+    public static void UseCustomSerilogRequestLogging(this WebApplication app)
     {
-        public static void UseCustomSerilogRequestLogging(this WebApplication app)
-        {
-            app.UseSerilogRequestLogging();
-        }
+        app.UseSerilogRequestLogging();
     }
 }

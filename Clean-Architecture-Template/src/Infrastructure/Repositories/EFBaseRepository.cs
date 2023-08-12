@@ -53,8 +53,8 @@ namespace Infrastructure.Repositories
             var link = await _dbSet.FindAsync(id);
             if (link is not null)
             {
-                link.ModifiedDate = DateTimeOffset.Now;
-                link.IsDeleted = true;
+                link.UpdatedAt = DateTimeOffset.Now;
+                link.DeletedAt = DateTimeOffset.Now;
             }
         }
 

@@ -1,25 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Domain.Entities;
 
-namespace Domain.Entities
+using System;
+
+public class BaseEntity
 {
-    public interface IBaseEntity
-    {
-        long Id { get; set; }
-        bool IsDeleted { get; set; }
-        DateTimeOffset CreatedDate { get; set; }
-        DateTimeOffset? ModifiedDate { get; set; }
-    }
-
-    public class BaseEntity : IBaseEntity
-    {
-        public long Id { get; set; }
-        public bool IsDeleted { get; set; }
-        public DateTimeOffset CreatedDate { get; set; }
-        public DateTimeOffset? ModifiedDate { get; set; }
-    }
+    public long Id { get; set; }
+    public DateTimeOffset? DeletedAt { get; set; }
+    public DateTimeOffset CreatedAt { get; set; }
+    public DateTimeOffset UpdatedAt { get; set; }
 }
