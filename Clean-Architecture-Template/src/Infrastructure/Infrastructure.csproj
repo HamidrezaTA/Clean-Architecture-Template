@@ -17,6 +17,7 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
+    <PackageReference Include="EFCore.NamingConventions"/>
   </ItemGroup>
 
 </Project>
