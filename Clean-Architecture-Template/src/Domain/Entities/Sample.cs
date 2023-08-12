@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Domain.Entities;
+
 using Domain.Enums;
 
-namespace Domain.Entities
+public class Sample : BaseEntity
 {
-    public class Sample : BaseEntity
-    {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public SampleStateEnum State { get; set; }
-    }
+    public required string Title { get; set; }
+    public required string Description { get; set; }
+    public SampleStateEnum State { get; set; }
 }

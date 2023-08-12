@@ -1,8 +1,7 @@
-namespace Domain.Enums
+namespace Domain.Enums;
+
+public enum SampleStateEnum
 {
-    public enum SampleStateEnum
-    {
-        Active,
-        Deactive
-    }
+    Active = 0,
+    Inactive = 1
 }
