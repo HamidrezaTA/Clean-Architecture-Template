@@ -1,6 +1,6 @@
-﻿using Application.DTOs;
+﻿namespace Application.Services.Interfaces.V1;
 
-namespace Application.Services.Interfaces;
+using Application.DTOs.V1;
 
 public interface ISampleService
 {

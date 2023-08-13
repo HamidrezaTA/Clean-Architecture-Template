@@ -1,11 +1,12 @@
-using Application.DTOs;
-using Application.Services.Interfaces;
+namespace API.Controllers.V1;
+
+using Application.DTOs.V1;
+using Application.Services.Interfaces.V1;
+using Application.Services.Interfaces.V1.Sample;
 using Microsoft.AspNetCore.Mvc;
 
-namespace API.Controllers;
-
 [ApiController]
-[Route("api/sample")]
+[Route("api/v1/sample")]
 public class SampleController : ControllerBase
 {
     private readonly ILogger<SampleController> _logger;
@@ -19,9 +20,9 @@ public class SampleController : ControllerBase
     }
 
     [HttpGet()]
-    public async Task<IEnumerable<SampleDto>> GetAll([FromQuery] SampleFilter filter)
+    public async Task<IEnumerable<SampleDto>> GetAll([FromQuery] SampleFilter filter, ISampleGetAllService sampleGetAllService)
     {
-        return await _sampleService.GetByFilterAsync(filter);
+        return await sampleGetAllService.GetByFilterAsync(filter);
     }
 
     [HttpGet("{id}")]
