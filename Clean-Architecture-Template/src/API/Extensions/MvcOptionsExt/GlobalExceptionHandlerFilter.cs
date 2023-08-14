@@ -15,6 +15,7 @@ public class GlobalExceptionHandlerFilter : ExceptionFilterAttribute
     private readonly IWebHostEnvironment _env;
     private int _statusCode = 500;
     private string _exceptionMessage = "Internal Server Error";
+    private Dictionary<string, List<string>>? _bulkMessages = null;
     private readonly List<Type> _doNotReport = new()
     {
         // typeof(NotFoundException)
@@ -50,6 +51,7 @@ public class GlobalExceptionHandlerFilter : ExceptionFilterAttribute
         {
             _statusCode = httpException.Status;
             _exceptionMessage = catchException.InnerException?.Message ?? catchException.Message;
+            _bulkMessages = httpException.BulkMessages;
         }
 
         JsonResponse<object> _result = new()
@@ -59,6 +61,7 @@ public class GlobalExceptionHandlerFilter : ExceptionFilterAttribute
             Error = new ErrorModel
             {
                 Message = _exceptionMessage,
+                BulkMessages = _bulkMessages,
                 Code = exceptionCode
             }
         };

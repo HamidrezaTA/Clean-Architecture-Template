@@ -41,6 +41,8 @@ builder.Services.AddRepositoryServices();
 
 builder.Services.AddBusinessServices();
 
+builder.Services.AddValidatorServices();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
