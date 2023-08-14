@@ -6,7 +6,8 @@ using Application.Services.Interfaces.V1.Sample;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("api/v1/sample")]
+[Route("api/v{version:apiVersion}/sample")]
+[ApiVersion("1.0")]
 public class SampleController : ControllerBase
 {
     private readonly ILogger<SampleController> _logger;

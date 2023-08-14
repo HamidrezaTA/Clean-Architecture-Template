@@ -18,16 +18,18 @@ if (mySqlConnectionString == null || redisConnectionString == null)
 builder.UseCustomSerilog();
 
 //EF Core
-builder.Services.AddEFCoreMySqlDbContext(mySqlConnectionString);
+builder.Services.AddEFCoreMySqlDbContext(connectionString: mySqlConnectionString);
 
 //Redis
-builder.Services.AddRedis(redisConnectionString);
+builder.Services.AddRedis(redisConnectionString: redisConnectionString);
 
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ActionResultFilter>();
     options.Filters.Add<GlobalExceptionHandlerFilter>();
 });
+
+builder.Services.AddApiVersioningService();
 
 builder.Services.AddEndpointsApiExplorer();
 

@@ -14,8 +14,10 @@
 
     <PackageReference Include="Swashbuckle.AspNetCore"/>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
-
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design"/>
+
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning"/>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer"/>
   </ItemGroup>
 
   <ItemGroup>

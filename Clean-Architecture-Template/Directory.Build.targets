@@ -6,6 +6,7 @@
     <AutoMapperVersion>12.0.1</AutoMapperVersion>
     <FluentValidationVersion>11.6.0</FluentValidationVersion>
     <SwashbuckleVersion>6.5.0</SwashbuckleVersion>
+    <ApiVersion>5.1.0</ApiVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -40,6 +41,11 @@
   <ItemGroup>
     <PackageReference Update="Swashbuckle.AspNetCore" Version="$(SwashbuckleVersion)" />
     <PackageReference Update="Swashbuckle.AspNetCore.Annotations" Version="$(SwashbuckleVersion)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Versioning" Version="$(ApiVersion)" />
+    <PackageReference Update="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="$(ApiVersion)" />
   </ItemGroup>
 
   <ItemGroup>
