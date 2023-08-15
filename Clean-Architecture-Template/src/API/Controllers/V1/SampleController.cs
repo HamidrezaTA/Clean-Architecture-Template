@@ -1,7 +1,6 @@
 namespace API.Controllers.V1;
 
 using Application.DTOs.V1;
-using Application.Services.Interfaces.V1;
 using Application.Services.Interfaces.V1.Sample;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,12 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 public class SampleController : ControllerBase
 {
     private readonly ILogger<SampleController> _logger;
-    private readonly ISampleService _sampleService;
 
-    public SampleController(ILogger<SampleController> logger,
-                            ISampleService sampleService)
+    public SampleController(ILogger<SampleController> logger)
     {
-        _sampleService = sampleService;
         _logger = logger;
     }
 
@@ -27,20 +23,20 @@ public class SampleController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<SampleDto> GetById([FromRoute] long id)
+    public async Task<SampleDto> GetById([FromRoute] long id, ISampleGetService sampleGetService)
     {
-        return await _sampleService.GetSampleById(id);
+        return await sampleGetService.GetSampleById(id);
     }
 
     [HttpPost()]
-    public async Task CreateSample([FromBody] SampleDto dto)
+    public async Task CreateSample([FromBody] SampleDto dto, ISampleCreateService sampleCreateService)
     {
-        await _sampleService.CreateSample(dto);
+        await sampleCreateService.CreateSample(dto);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteSample(long id)
+    public async Task DeleteSample(long id, ISampleDeleteService sampleDeleteService)
     {
-        await _sampleService.DeleteSample(id);
+        await sampleDeleteService.DeleteSample(id);
     }
 }
