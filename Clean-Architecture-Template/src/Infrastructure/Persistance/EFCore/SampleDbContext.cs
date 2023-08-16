@@ -1,7 +1,7 @@
 ﻿namespace Infrastructure.Persistance.EFCore;
 
 using Domain.Entities;
-using Infrastructure.Persistance.FluentAPIs;
+using Infrastructure.Persistance.EFCore.FluentAPIs;
 using Microsoft.EntityFrameworkCore;
 
 public class SampleDbContext : DbContext

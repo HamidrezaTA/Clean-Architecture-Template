@@ -4,16 +4,16 @@ using Application.DTOs.V1;
 using Application.Services.Interfaces.V1.Sample;
 using Domain.Repositories;
 
-public class SampleCreateService : ISampleCreateService
+public class SampleGetServiceV1 : ISampleGetServiceV1
 {
     private readonly ISampleRepository _sampleRepository;
 
-    public SampleCreateService(ISampleRepository sampleRepository)
+    public SampleGetServiceV1(ISampleRepository sampleRepository)
     {
         _sampleRepository = sampleRepository;
     }
 
-    public Task CreateSample(SampleDto link)
+    public Task<SampleDtoV1?> GetSampleById(long id)
     {
         throw new NotImplementedException();
     }

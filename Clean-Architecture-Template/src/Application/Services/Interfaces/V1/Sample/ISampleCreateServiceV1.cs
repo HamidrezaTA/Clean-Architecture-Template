@@ -2,7 +2,7 @@
 
 using Application.DTOs.V1;
 
-public interface ISampleCreateService
+public interface ISampleCreateServiceV1
 {
-    Task CreateSample(SampleDto link);
+    Task CreateSample(SampleDtoV1 link);
 }

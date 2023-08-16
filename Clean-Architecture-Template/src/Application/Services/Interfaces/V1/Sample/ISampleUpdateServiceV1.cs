@@ -2,7 +2,7 @@
 
 using Application.DTOs.V1;
 
-public interface ISampleUpdateService
+public interface ISampleUpdateServiceV1
 {
-    Task UpdateSample(SampleDto link);
+    Task UpdateSample(SampleDtoV1 link);
 }

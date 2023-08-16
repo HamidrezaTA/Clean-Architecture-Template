@@ -2,7 +2,7 @@
 
 using Application.DTOs.V1;
 
-public interface ISampleGetService
+public interface ISampleGetServiceV1
 {
-    Task<SampleDto?> GetSampleById(long id);
+    Task<SampleDtoV1?> GetSampleById(long id);
 }

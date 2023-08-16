@@ -4,16 +4,16 @@ using Application.DTOs.V1;
 using Application.Services.Interfaces.V1.Sample;
 using Domain.Repositories;
 
-public class SampleUpdateService : ISampleUpdateService
+public class SampleUpdateServiceV1 : ISampleUpdateServiceV1
 {
     private readonly ISampleRepository _sampleRepository;
 
-    public SampleUpdateService(ISampleRepository sampleRepository)
+    public SampleUpdateServiceV1(ISampleRepository sampleRepository)
     {
         _sampleRepository = sampleRepository;
     }
 
-    public Task UpdateSample(SampleDto link)
+    public Task UpdateSample(SampleDtoV1 link)
     {
         throw new NotImplementedException();
     }

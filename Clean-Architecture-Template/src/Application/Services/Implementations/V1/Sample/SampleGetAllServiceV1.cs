@@ -6,17 +6,17 @@ using Application.Validations;
 using Domain.Repositories;
 using FluentValidation;
 
-public class SampleGetAllService: ISampleGetAllService
+public class SampleGetAllServiceV1 : ISampleGetAllServiceV1
 {
     private readonly ISampleRepository _sampleRepository;
-    private readonly IValidator<SampleFilter> _validator;
+    private readonly IValidator<SampleFilterV1> _validator;
 
-    public SampleGetAllService(IValidator<SampleFilter> validator, ISampleRepository sampleRepository)
+    public SampleGetAllServiceV1(IValidator<SampleFilterV1> validator, ISampleRepository sampleRepository)
     {
         _sampleRepository = sampleRepository;
         _validator = validator;
     }
-    public async Task<List<SampleDto>> GetByFilterAsync(SampleFilter filter)
+    public async Task<List<SampleDtoV1>> GetByFilterAsync(SampleFilterV1 filter)
     {
         await _validator.Validated(payload: filter);
 

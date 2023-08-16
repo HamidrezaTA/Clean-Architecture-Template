@@ -5,7 +5,7 @@
 To begin, rename the file `.env.example` to `.env` and fill in all the values. Then start the project using the following command:
 
 ```shell
-make install
+bash make.sh install
 ```
 
 > 🔰 **Notice** 🔰
@@ -13,7 +13,7 @@ make install
 > If you need to build a GUI for monitoring the database or Redis, use the following command:
 > 
 > ```shell
-> make install-with-gui
+> bash make.sh install-with-gui
 > ```
 > 
 > | service         | port |
@@ -24,7 +24,7 @@ make install
 *create migration files:*
 
 ```shell
-make migration-add MIGRATION_NAME=<migration-name>
+bash make.sh migration-add <migration_name>
 ```
 
 ---
@@ -32,7 +32,7 @@ make migration-add MIGRATION_NAME=<migration-name>
 *up migrations:*
 
 ```shell
-make migration-update
+bash make.sh migration-update
 ```
 
 ---
@@ -40,7 +40,7 @@ make migration-update
 *rollback migrations:*
 
 ```shell
-make migration-rollback MIGRATION_NAME=<migration-name>
+bash make.sh migration-rollback <migration_name>
 ```
 
 ---

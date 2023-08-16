@@ -17,25 +17,25 @@ public class SampleController : ControllerBase
     }
 
     [HttpGet()]
-    public async Task<IEnumerable<SampleDto>> GetAll([FromQuery] SampleFilter filter, ISampleGetAllService sampleGetAllService)
+    public async Task<IEnumerable<SampleDtoV1>> GetAll([FromQuery] SampleFilterV1 filter, ISampleGetAllServiceV1 sampleGetAllService)
     {
         return await sampleGetAllService.GetByFilterAsync(filter);
     }
 
     [HttpGet("{id}")]
-    public async Task<SampleDto> GetById([FromRoute] long id, ISampleGetService sampleGetService)
+    public async Task<SampleDtoV1> GetById([FromRoute] long id, ISampleGetServiceV1 sampleGetService)
     {
         return await sampleGetService.GetSampleById(id);
     }
 
     [HttpPost()]
-    public async Task CreateSample([FromBody] SampleDto dto, ISampleCreateService sampleCreateService)
+    public async Task CreateSample([FromBody] SampleDtoV1 dto, ISampleCreateServiceV1 sampleCreateService)
     {
         await sampleCreateService.CreateSample(dto);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteSample(long id, ISampleDeleteService sampleDeleteService)
+    public async Task DeleteSample(long id, ISampleDeleteServiceV1 sampleDeleteService)
     {
         await sampleDeleteService.DeleteSample(id);
     }
