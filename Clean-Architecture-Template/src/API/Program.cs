@@ -5,6 +5,7 @@ using Infrastructure.Caching.Redis;
 using API.Extensions.MvcOptionsExt;
 using API.Extensions.WebApplicationBuilderExt;
 using API.Extensions.WebApplicationExt;
+using API.Extensions.ApiBehaviorOptionsExt;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +28,9 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ActionResultFilter>();
     options.Filters.Add<GlobalExceptionHandlerFilter>();
+}).ConfigureApiBehaviorOptions(apiOptions =>
+{
+    apiOptions.AddCustomInvalidModelResponse();
 });
 
 builder.Services.AddApiVersioningService();

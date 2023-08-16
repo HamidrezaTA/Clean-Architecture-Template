@@ -2,7 +2,7 @@
 MIGRATION_NAME := $(shell date +"%Y%m%d%H%M%S")
 API_CSPROJ = src/API/API.csproj
 INFRA_CSPROJ = src/Infrastructure/Infrastructure.csproj
-MIGRATION_PATH = Persistance/EFCore/Migrations
+MIGRATION_PATH = /Persistance/EFCore/Migrations
 include .env
 
 ################## Migration ##################

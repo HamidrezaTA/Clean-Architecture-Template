@@ -1,18 +1,19 @@
 namespace Application.Services.Implementations.V1.Sample;
 
+using Application.DTOs.V1;
 using Application.Services.Interfaces.V1.Sample;
 using Domain.Repositories;
 
-public class SampleDeleteService : ISampleDeleteService
+public class SampleCreateServiceV1 : ISampleCreateServiceV1
 {
     private readonly ISampleRepository _sampleRepository;
 
-    public SampleDeleteService(ISampleRepository sampleRepository)
+    public SampleCreateServiceV1(ISampleRepository sampleRepository)
     {
         _sampleRepository = sampleRepository;
     }
 
-    public Task DeleteSample(long id)
+    public Task CreateSample(SampleDtoV1 link)
     {
         throw new NotImplementedException();
     }

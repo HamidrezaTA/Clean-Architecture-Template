@@ -1,4 +1,4 @@
-namespace Infrastructure.Persistance.FluentAPIs;
+namespace Infrastructure.Persistance.EFCore.FluentAPIs;
 
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
