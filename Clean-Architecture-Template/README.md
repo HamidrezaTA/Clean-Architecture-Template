@@ -1,5 +1,11 @@
 ## commands
 
+*get list of all commands*
+
+```shell
+bash make.sh help
+```
+
 *install application*
 
 To begin, rename the file `.env.example` to `.env` and fill in all the values. Then start the project using the following command:

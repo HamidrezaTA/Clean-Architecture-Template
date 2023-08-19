@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ################## Variables ##################
-MIGRATION_NAME=$(date +"%Y%m%d%H%M%S")
+# MIGRATION_NAME=$(date +"%Y%m%d%H%M%S")
 API_CSPROJ="src/API/API.csproj"
 INFRA_CSPROJ="src/Infrastructure/Infrastructure.csproj"
 MIGRATION_PATH="Persistance/EFCore/Migrations"
@@ -37,6 +37,19 @@ install-with-gui() {
     fi
 }
 
+################## Help ##################
+display_usage() {
+    # Print table header
+    printf "%-50s  %-10s\n" "Commands" "Description"
+
+    # Print table rows
+    printf "%-50s  %-10s\n" "bash $0 migration-add <migration_name>" "Create a new migration with the specified name"
+    printf "%-50s  %-10s\n" "bash $0 migration-update" "Update the database with the applied migrations"
+    printf "%-50s  %-10s\n" "bash $0 migration-rollback <migration_name>" "Rollback the database to the specified migration"
+    printf "%-50s  %-10s\n" "bash $0 install" "Install the application"
+    printf "%-50s  %-10s\n" "bash $0 install-with-gui" "Install the application with GUI tools"
+}
+
 ################## Main ##################
 case "$1" in
     migration-add)
@@ -56,8 +69,11 @@ case "$1" in
     install-with-gui)
         install-with-gui
         ;;
+    help)
+        display_usage
+        ;;
     *)
-        echo "Usage: $0 {migration-add <migration_name> | migration-update | migration-rollback <migration_name> | install | install-with-gui}"
+        echo "Invalid command! for getting all commands run: bash $0 help"
         exit 1
 esac
 
