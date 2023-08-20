@@ -1,17 +1,20 @@
 ## commands
 
-*get list of all commands*
+### Setup Instructions:
 
-```shell
-bash make.sh help
-```
+1. Rename the file .env.example to .env and fill in all the necessary values.
+2. Install Make on your operating system using one of the following methods:
+    - Linux/Mac: Run the command apt install make in the terminal.
+    - Windows: Refer to this Stack Overflow answer for instructions: link. (I recommend using Chocolatey)
+
+### Usage:
+
+Once the setup is complete, you can use the following commands:
 
 *install application*
 
-To begin, rename the file `.env.example` to `.env` and fill in all the values. Then start the project using the following command:
-
 ```shell
-bash make.sh install
+make install
 ```
 
 > 🔰 **Notice** 🔰
@@ -19,7 +22,7 @@ bash make.sh install
 > If you need to build a GUI for monitoring the database or Redis, use the following command:
 > 
 > ```shell
-> bash make.sh install-with-gui
+> make install-with-gui
 > ```
 > 
 > | service         | port |
@@ -30,7 +33,7 @@ bash make.sh install
 *create migration files:*
 
 ```shell
-bash make.sh migration-add <migration_name>
+make migration-add MIGRATION_NAME=<migration_name>
 ```
 
 ---
@@ -38,7 +41,7 @@ bash make.sh migration-add <migration_name>
 *up migrations:*
 
 ```shell
-bash make.sh migration-update
+make migration-update
 ```
 
 ---
@@ -46,7 +49,7 @@ bash make.sh migration-update
 *rollback migrations:*
 
 ```shell
-bash make.sh migration-rollback <migration_name>
+make migration-rollback MIGRATION_NAME=<migration_name>
 ```
 
 ---
