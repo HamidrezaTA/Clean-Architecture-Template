@@ -4,7 +4,7 @@
 
 1. Rename the file .env.example to .env and fill in all the necessary values.
 2. Install Make on your operating system using one of the following methods:
-    - Linux/Mac: Run the command apt install make in the terminal.
+    - Linux/Mac: Run the command `apt install make` in the terminal.
     - Windows: [Installation](https://stackoverflow.com/a/32127632/4418533). (I recommend using Chocolatey)
 
 ### Usage:

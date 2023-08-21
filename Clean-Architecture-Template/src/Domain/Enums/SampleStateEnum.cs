@@ -2,6 +2,6 @@ namespace Domain.Enums;
 
 public enum SampleStateEnum
 {
-    Active = 0,
-    Inactive = 1
+    Active = 1,
+    Inactive = 2
 }
