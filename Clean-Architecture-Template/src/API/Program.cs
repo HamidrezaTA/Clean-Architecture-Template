@@ -70,7 +70,7 @@ builder.Services.AddCap(capOptions =>
         rabbitMqOptions.Password = _rabbitMqConfigurations.AMQPPASSWORD;
         rabbitMqOptions.VirtualHost = _rabbitMqConfigurations.AMQPVIRTUALHOST;
         rabbitMqOptions.ExchangeName = _rabbitMqConfigurations.AMQPEXCHANGENAME;
-        rabbitMqOptions.ExchangeType = _rabbitMqConfigurations.AMQPEXCHANGETYPE;
+        //rabbitMqOptions.ExchangeType = _rabbitMqConfigurations.AMQPEXCHANGETYPE;
         rabbitMqOptions.CustomHeaders = e => new List<KeyValuePair<string, string>>
         {
             new KeyValuePair<string, string>(Headers.MessageId, Guid.NewGuid().ToString()),

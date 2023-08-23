@@ -57,10 +57,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="DotNetCore.CAP" Version="7.2.2" />
-    <PackageReference Update="DotNetCore.CAP.RabbitMQ" Version="7.2.2" />
+    <PackageReference Update="DotNetCore.CAP" Version="7.2.0" />
+    <PackageReference Update="DotNetCore.CAP.RabbitMQ" Version="7.2.0" />
     <PackageReference Update="DotNetCore.CAP.Dashboard" Version="7.2.0" />
-    <PackageReference Update="DotNetCore.CAP.InMemoryStorage" Version="7.2.2" />
+    <PackageReference Update="DotNetCore.CAP.InMemoryStorage" Version="7.2.0" />
   </ItemGroup>
 
   <ItemGroup>
