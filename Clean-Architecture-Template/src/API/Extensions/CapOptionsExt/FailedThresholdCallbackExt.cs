@@ -12,6 +12,7 @@ namespace API.Extensions.CapOptionsExt
         {
             options.FailedThresholdCallback = (info) =>
              {
+                 //TODO: Hamidreza, Fix it
                  //     foreach (var header in info.Message.Headers)
                  //     {
                  //         Log.Error(header.Key + " : " + header.Value);
