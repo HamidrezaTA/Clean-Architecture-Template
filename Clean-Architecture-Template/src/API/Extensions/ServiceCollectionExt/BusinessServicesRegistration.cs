@@ -12,5 +12,7 @@ public static class BusinessServicesRegistration
         services.AddScoped<ISampleGetAllServiceV1, SampleGetAllServiceV1>();
         services.AddScoped<ISampleGetServiceV1, SampleGetServiceV1>();
         services.AddScoped<ISampleUpdateServiceV1, SampleUpdateServiceV1>();
+
+
     }
 }
