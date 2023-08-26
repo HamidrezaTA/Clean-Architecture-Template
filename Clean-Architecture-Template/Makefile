@@ -22,13 +22,13 @@ install:
 ifeq ($(findstring $(APP_ENV),Development Local),)
 	docker compose --profile $(APP_ENV) up -d
 else
-	LOCAL_DB_PORT=$(DB_PORT) LOCAL_REDIS_PORT=$(REDIS_PORT) docker compose --profile $(APP_ENV) up -d
+	LOCAL_RABBIT_PORT=$(RABBIT_PORT) LOCAL_DB_PORT=$(DB_PORT) LOCAL_REDIS_PORT=$(REDIS_PORT) docker compose --profile $(APP_ENV) up -d
 endif
 install-with-gui:
 ifeq ($(findstring $(APP_ENV),Development Local),)
 	docker compose --profile $(APP_ENV) --profile phpmyadmin --profile redis-commander up -d
 else
-	LOCAL_DB_PORT=$(DB_PORT) LOCAL_REDIS_PORT=$(REDIS_PORT) docker compose --profile $(APP_ENV) --profile phpmyadmin --profile redis-commander up -d
+	LOCAL_RABBIT_PORT=$(RABBIT_PORT) LOCAL_RABBIT_MANAGEMENT=$(RABBIT_MANAGEMENT) LOCAL_DB_PORT=$(DB_PORT) LOCAL_REDIS_PORT=$(REDIS_PORT) docker compose --profile $(APP_ENV) --profile phpmyadmin --profile redis-commander up -d
 endif
 
 ################## phony ##################

@@ -56,7 +56,7 @@ services:
     #################### redis #################### TODO: redis password
     redis:
         image: redis:7.2-rc
-        expose:
+        ports:
             - ${LOCAL_REDIS_PORT:-}:${REDIS_PORT:-6379}
         hostname: ${REDIS_HOST:-127.0.0.1}
         environment:
@@ -75,6 +75,23 @@ services:
             # interval: 30s
             timeout: 5s
             retries: 6
+
+    ################### rabbitmq ##################
+    rabbitmq:
+        image: heidiks/rabbitmq-delayed-message-exchange:3.10.2-management
+        ports:
+            - ${LOCAL_RABBIT_PORT:-}:${RABBIT_PORT:-5672}
+            - ${LOCAL_RABBIT_MANAGEMENT:-}:${RABBIT_MANAGEMENT:-15672}
+        environment:
+            - RABBITMQ_DEFAULT_USER=${AMQPUSERNAME:-guest}
+            - RABBITMQ_DEFAULT_PASS=${AMQPPASSWORD:-guest}
+            - RABBITMQ_DEFAULT_VHOST=${AMQPVIRTUALHOST:-/}
+        restart: unless-stopped
+        logging:
+            options:
+                max-size: "50m"
+        volumes:
+            - rabbit-data:/var/lib/rabbitmq
 
     ########################### PHPMYADMIN ###########################
     phpmyadmin:
@@ -128,4 +145,6 @@ networks:
 # Volumes
 volumes:
     mysql-data:
+        driver: local
+    rabbit-data:
         driver: local
