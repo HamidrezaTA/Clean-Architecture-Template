@@ -12,6 +12,11 @@ namespace API.Extensions.CapOptionsExt
         {
             options.FailedThresholdCallback = (info) =>
              {
+
+                 // var logger = failed.ServiceProvider.GetService<ILogger<Startup>>();
+                 //     logger.LogError($@"A message of type {failed.MessageType} failed after executing {x.FailedRetryCount} several times, 
+                 //         requiring manual troubleshooting. Message name: {failed.Message.GetName()}");
+
                  //TODO: Hamidreza, Fix it
                  //     foreach (var header in info.Message.Headers)
                  //     {

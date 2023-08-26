@@ -10,6 +10,8 @@ using DotNetCore.CAP.Messages;
 using API.Configurations;
 using System.Text.RegularExpressions;
 using API.Extensions.CapOptionsExt;
+using Application.MessageBus;
+using Infrastructure.MessageBus;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -55,6 +57,8 @@ builder.Services.AddBusinessServices();
 
 builder.Services.AddValidatorServices();
 
+builder.Services.AddScoped<IMessagePublisher, CapMessagePublisher>();
+
 var _rabbitMqConfigurations = new RabbitMqConfigurations();
 builder.Configuration.GetSection("RabbitMQ").Bind(_rabbitMqConfigurations);
 
@@ -70,7 +74,6 @@ builder.Services.AddCap(capOptions =>
         rabbitMqOptions.Password = _rabbitMqConfigurations.AMQPPASSWORD;
         rabbitMqOptions.VirtualHost = _rabbitMqConfigurations.AMQPVIRTUALHOST;
         rabbitMqOptions.ExchangeName = _rabbitMqConfigurations.AMQPEXCHANGENAME;
-        //rabbitMqOptions.ExchangeType = _rabbitMqConfigurations.AMQPEXCHANGETYPE;
         rabbitMqOptions.CustomHeaders = e => new List<KeyValuePair<string, string>>
         {
             new KeyValuePair<string, string>(Headers.MessageId, Guid.NewGuid().ToString()),

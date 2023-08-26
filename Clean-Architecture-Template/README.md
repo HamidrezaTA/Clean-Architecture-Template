@@ -54,6 +54,7 @@ make migration-rollback MIGRATION_NAME=<migration_name>
 
 ---
 
+# About CAP :
 
-
-# Clean architecture template
+Dear Snappfood developers, please make contact with us whenever you want to use CAP.
+You need custom nuget.config and adding a feature about selecting exchange type.

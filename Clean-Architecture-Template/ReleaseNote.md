@@ -10,3 +10,14 @@
 ## Version 1.1.0
 
 - Makefile added in order to facilitate migration and installation commands.
+
+## Version 2.0.0
+
+- Fluent Validation for dto objects
+- Fluent Api for entities specifications
+- Api Versioning
+- CAP library added to work with RabbitMQ
+- SoftDelete added to entities
+- MakeFile updated
+- Serilog added
+- DB Transaction added and UnitOfWork removed
