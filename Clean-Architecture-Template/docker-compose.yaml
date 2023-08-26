@@ -29,8 +29,6 @@ services:
     mysql:
         # image: mariadb:11.1-rc-jammy
         image: mysql:8.0-debian
-        ports:
-            - ${LOCAL_DB_PORT:-}:${DB_PORT:-3306}
         environment:
             TZ: ${APP_TZ:-Asia/Tehran}
             MYSQL_RANDOM_ROOT_PASSWORD: yes
@@ -56,8 +54,6 @@ services:
     #################### redis #################### TODO: redis password
     redis:
         image: redis:7.2-rc
-        ports:
-            - ${LOCAL_REDIS_PORT:-}:${REDIS_PORT:-6379}
         hostname: ${REDIS_HOST:-127.0.0.1}
         environment:
             TZ: ${APP_TZ:-Asia/Tehran}
@@ -79,9 +75,6 @@ services:
     ################### rabbitmq ##################
     rabbitmq:
         image: heidiks/rabbitmq-delayed-message-exchange:3.10.2-management
-        ports:
-            - ${LOCAL_RABBIT_PORT:-}:${RABBIT_PORT:-5672}
-            - ${LOCAL_RABBIT_MANAGEMENT:-}:${RABBIT_MANAGEMENT:-15672}
         environment:
             - RABBITMQ_DEFAULT_USER=${AMQPUSERNAME:-guest}
             - RABBITMQ_DEFAULT_PASS=${AMQPPASSWORD:-guest}

@@ -1,0 +1,19 @@
+version: "3.9"
+
+services:
+    #################### mysql ####################
+    mysql:
+        expose:
+            - ${DB_PORT:-3306}
+
+    #################### redis ####################
+    redis:
+        expose:
+            - ${REDIS_PORT:-6379}
+
+    ################### rabbitmq ##################
+    rabbitmq:
+        expose:
+            - ${RABBIT_PORT:-5672}
+        ports:
+            - ${RABBIT_MANAGEMENT:-}:${RABBIT_MANAGEMENT:-15672}
