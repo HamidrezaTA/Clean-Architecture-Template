@@ -6,10 +6,16 @@ using API.Extensions.MvcOptionsExt;
 using API.Extensions.WebApplicationBuilderExt;
 using API.Extensions.WebApplicationExt;
 using API.Extensions.ApiBehaviorOptionsExt;
+using DotNetCore.CAP.Messages;
+using API.Configurations;
+using System.Text.RegularExpressions;
+using API.Extensions.CapOptionsExt;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables();
+
+builder.Services.Configure<ApiConfigurations>(builder.Configuration);
 
 string? mySqlConnectionString = builder.Configuration.GetConnectionString("MySql");
 string? redisConnectionString = builder.Configuration.GetConnectionString("Redis");
@@ -48,6 +54,31 @@ builder.Services.AddRepositoryServices();
 builder.Services.AddBusinessServices();
 
 builder.Services.AddValidatorServices();
+
+var _rabbitMqConfigurations = new RabbitMqConfigurations();
+builder.Configuration.GetSection("RabbitMQ").Bind(_rabbitMqConfigurations);
+
+builder.Services.AddCap(capOptions =>
+{
+    capOptions.ConsumerThreadCount = 1;
+    capOptions.UseInMemoryStorage();
+    capOptions.UseDashboard();
+    capOptions.UseRabbitMQ(rabbitMqOptions =>
+    {
+        rabbitMqOptions.HostName = _rabbitMqConfigurations.AMQPHOSTNAME;
+        rabbitMqOptions.UserName = _rabbitMqConfigurations.AMQPUSERNAME;
+        rabbitMqOptions.Password = _rabbitMqConfigurations.AMQPPASSWORD;
+        rabbitMqOptions.VirtualHost = _rabbitMqConfigurations.AMQPVIRTUALHOST;
+        rabbitMqOptions.ExchangeName = _rabbitMqConfigurations.AMQPEXCHANGENAME;
+        //rabbitMqOptions.ExchangeType = _rabbitMqConfigurations.AMQPEXCHANGETYPE;
+        rabbitMqOptions.CustomHeaders = e => new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>(Headers.MessageId, Guid.NewGuid().ToString()),
+            new KeyValuePair<string, string>(Headers.MessageName, e.RoutingKey),
+        };
+    });
+    capOptions.AddFailedThresholdCallbackExt();
+});
 
 var app = builder.Build();
 

@@ -29,8 +29,6 @@ services:
     mysql:
         # image: mariadb:11.1-rc-jammy
         image: mysql:8.0-debian
-        ports:
-            - ${LOCAL_DB_PORT:-}:${DB_PORT:-3306}
         environment:
             TZ: ${APP_TZ:-Asia/Tehran}
             MYSQL_RANDOM_ROOT_PASSWORD: yes
@@ -56,8 +54,6 @@ services:
     #################### redis #################### TODO: redis password
     redis:
         image: redis:7.2-rc
-        expose:
-            - ${LOCAL_REDIS_PORT:-}:${REDIS_PORT:-6379}
         hostname: ${REDIS_HOST:-127.0.0.1}
         environment:
             TZ: ${APP_TZ:-Asia/Tehran}
@@ -75,6 +71,20 @@ services:
             # interval: 30s
             timeout: 5s
             retries: 6
+
+    ################### rabbitmq ##################
+    rabbitmq:
+        image: heidiks/rabbitmq-delayed-message-exchange:3.10.2-management
+        environment:
+            - RABBITMQ_DEFAULT_USER=${AMQPUSERNAME:-guest}
+            - RABBITMQ_DEFAULT_PASS=${AMQPPASSWORD:-guest}
+            - RABBITMQ_DEFAULT_VHOST=${AMQPVIRTUALHOST:-/}
+        restart: unless-stopped
+        logging:
+            options:
+                max-size: "50m"
+        volumes:
+            - rabbit-data:/var/lib/rabbitmq
 
     ########################### PHPMYADMIN ###########################
     phpmyadmin:
@@ -128,4 +138,6 @@ networks:
 # Volumes
 volumes:
     mysql-data:
+        driver: local
+    rabbit-data:
         driver: local
