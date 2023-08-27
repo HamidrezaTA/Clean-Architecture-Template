@@ -1,27 +1,42 @@
 using Application.MessageBus;
+using DotNetCore.CAP;
 
 namespace Infrastructure.MessageBus.CAP
 {
     public class CapMessagePublisherBuilder : IMessagePublisherBuilder
     {
-        public Task Publish(object message)
+        private string _queueName;
+        private string _exchangeName;
+        private string _routingKey;
+        private readonly ICapPublisher _capPublisher;
+
+        public CapMessagePublisherBuilder(ICapPublisher capPublisher)
         {
-            throw new NotImplementedException();
+            _capPublisher = capPublisher;
+
+        }
+        public async Task Publish(object message)
+        {
+            await _capPublisher.PublishAsync(_routingKey, message);
         }
 
         public IMessagePublisherBuilder QueueBindToExchange(string routingKey)
         {
-            throw new NotImplementedException();
+            _routingKey = routingKey;
+            return this;
         }
 
         public IMessagePublisherBuilder SetExchange(string exchangeName, string exchangeType, bool durable)
         {
-            throw new NotImplementedException();
+            _exchangeName = exchangeName;
+            return this;
+
         }
 
         public IMessagePublisherBuilder SetQueue(string queueName, bool durable, bool autoDelete)
         {
-            throw new NotImplementedException();
+            _queueName = queueName;
+            return this;
         }
     }
 }
