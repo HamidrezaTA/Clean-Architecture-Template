@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Application.MessageBus
+namespace Application.MessageBus.Subscribers
 {
-    public interface IMessagePublisher
+    public interface IBaseSubscriber
     {
-        void Publish();
+        void Handler();
     }
 }

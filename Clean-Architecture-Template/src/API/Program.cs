@@ -9,9 +9,11 @@ using API.Extensions.ApiBehaviorOptionsExt;
 using DotNetCore.CAP.Messages;
 using API.Configurations;
 using System.Text.RegularExpressions;
-using API.Extensions.CapOptionsExt;
+using Infrastructure.MessageBus.CAP.Extensions.ServiceCollectionExt;
+using Infrastructure.MessageBus.RabbitMqClient.Extensions.ServiceCollectionExt;
 using Application.MessageBus;
 using Infrastructure.MessageBus;
+using Infrastructure.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,31 +59,14 @@ builder.Services.AddBusinessServices();
 
 builder.Services.AddValidatorServices();
 
-builder.Services.AddScoped<IMessagePublisher, CapMessagePublisher>();
 
 var _rabbitMqConfigurations = new RabbitMqConfigurations();
 builder.Configuration.GetSection("RabbitMQ").Bind(_rabbitMqConfigurations);
 
-builder.Services.AddCap(capOptions =>
-{
-    capOptions.ConsumerThreadCount = 1;
-    capOptions.UseInMemoryStorage();
-    capOptions.UseDashboard();
-    capOptions.UseRabbitMQ(rabbitMqOptions =>
-    {
-        rabbitMqOptions.HostName = _rabbitMqConfigurations.AMQPHOSTNAME;
-        rabbitMqOptions.UserName = _rabbitMqConfigurations.AMQPUSERNAME;
-        rabbitMqOptions.Password = _rabbitMqConfigurations.AMQPPASSWORD;
-        rabbitMqOptions.VirtualHost = _rabbitMqConfigurations.AMQPVIRTUALHOST;
-        rabbitMqOptions.ExchangeName = _rabbitMqConfigurations.AMQPEXCHANGENAME;
-        rabbitMqOptions.CustomHeaders = e => new List<KeyValuePair<string, string>>
-        {
-            new KeyValuePair<string, string>(Headers.MessageId, Guid.NewGuid().ToString()),
-            new KeyValuePair<string, string>(Headers.MessageName, e.RoutingKey),
-        };
-    });
-    capOptions.AddFailedThresholdCallbackExt();
-});
+//Choose one of them CAP or RabbitMqClientApi
+// builder.Services.AddCapExt(_rabbitMqConfigurations);
+
+builder.Services.AddRabbitMqClient(_rabbitMqConfigurations);
 
 var app = builder.Build();
 

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace Application.MessageBus.Subscribers
 {
-    public interface ISampleSubscriberService
+    public interface ICreateSampleSubscriberService : IBaseSubscriber
     {
-        void Subscriber();
+
     }
 }
