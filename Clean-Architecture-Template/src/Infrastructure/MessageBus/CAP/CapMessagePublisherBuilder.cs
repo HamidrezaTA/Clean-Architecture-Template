@@ -15,7 +15,7 @@ namespace Infrastructure.MessageBus.CAP
             _capPublisher = capPublisher;
 
         }
-        public async Task Publish(object message)
+        public async Task PublishAsync(object message)
         {
             await _capPublisher.PublishAsync(_routingKey, message);
         }

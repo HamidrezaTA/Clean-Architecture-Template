@@ -10,6 +10,6 @@ namespace Application.MessageBus
         IMessagePublisherBuilder SetQueue(string queueName, bool durable, bool autoDelete);
         IMessagePublisherBuilder SetExchange(string exchangeName, string exchangeType, bool durable);
         IMessagePublisherBuilder QueueBindToExchange(string routingKey);
-        Task Publish(object message);
+        Task PublishAsync(object message);
     }
 }

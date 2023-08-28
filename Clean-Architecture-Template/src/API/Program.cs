@@ -14,6 +14,7 @@ using Infrastructure.MessageBus.RabbitMqClient.Extensions.ServiceCollectionExt;
 using Application.MessageBus;
 using Infrastructure.MessageBus;
 using Infrastructure.Configurations;
+using Infrastructure.MessageBus.RabbitMqClient.Consumers.Subscribers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,9 +65,12 @@ var _rabbitMqConfigurations = new RabbitMqConfigurations();
 builder.Configuration.GetSection("RabbitMQ").Bind(_rabbitMqConfigurations);
 
 //Choose one of them CAP or RabbitMqClientApi
+
 // builder.Services.AddCapExt(_rabbitMqConfigurations);
 
-builder.Services.AddRabbitMqClient(_rabbitMqConfigurations);
+//OR
+builder.Services.AddRabbitMqClient(_rabbitMqConfigurations)
+                .AddConsumer<SampleConsumer>("sample-queue", false, false, false, false);
 
 var app = builder.Build();
 

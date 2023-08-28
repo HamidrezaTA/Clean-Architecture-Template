@@ -7,10 +7,10 @@ namespace Infrastructure.MessageBus.RabbitMqClient.Extensions.ServiceCollectionE
 {
     public static class AddRabbitMqClientExt
     {
-        public static void AddRabbitMqClient(this IServiceCollection serviceCollection,
+        public static IServiceCollection AddRabbitMqClient(this IServiceCollection services,
                                              RabbitMqConfigurations rabbitMqConfigurations)
         {
-            serviceCollection.AddSingleton<IConnection>(sp =>
+            services.AddSingleton<IConnection>(sp =>
             {
                 var factory = new ConnectionFactory()
                 {
@@ -23,7 +23,26 @@ namespace Infrastructure.MessageBus.RabbitMqClient.Extensions.ServiceCollectionE
                 return factory.CreateConnection();
             });
 
-            serviceCollection.AddScoped<IMessagePublisherBuilder, RabbitMqClientMessagePublisherBuilder>();
+            services.AddScoped<IMessagePublisherBuilder, RabbitMqClientMessagePublisherBuilder>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddConsumer<T>(this IServiceCollection services,
+                                                        string queueName,
+                                                        bool durable,
+                                                        bool exclusive,
+                                                        bool autoDelete,
+                                                        bool autoAck) where T : AbstractMessageConsumer
+        {
+            services.AddSingleton<MessageConsumersFactory<T>>();
+            services.AddHostedService(provider =>
+            {
+                var factory = provider.GetRequiredService<MessageConsumersFactory<T>>();
+                return factory.Create(queueName, durable, exclusive, autoDelete, autoAck);
+            });
+
+            return services;
         }
     }
 }

@@ -33,6 +33,6 @@ public class SampleCreateServiceV1 : ISampleCreateServiceV1
         await _messagePublisher.SetQueue("sample-queue", false, false)
                                .SetExchange("sample-exchange", "direct", false)
                                .QueueBindToExchange("sample-routing-key")
-                               .Publish(dto);
+                               .PublishAsync(dto);
     }
 }

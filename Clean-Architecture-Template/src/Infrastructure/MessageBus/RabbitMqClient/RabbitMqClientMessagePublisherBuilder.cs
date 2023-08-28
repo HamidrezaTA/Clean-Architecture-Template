@@ -23,7 +23,7 @@ namespace Infrastructure.MessageBus.RabbitMqClient
             _channel = _rabbitMqConnection.CreateModel();
         }
 
-        public Task Publish(object message)
+        public Task PublishAsync(object message)
         {
             var body = Encoding.UTF8.GetBytes(message.ToString());
             _channel.BasicPublish(exchange: _exchangeName, routingKey: _routingKey, basicProperties: null, body: body);
