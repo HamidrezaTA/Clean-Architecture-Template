@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Configurations
+namespace Infrastructure.Configurations
 {
     public class RabbitMqConfigurations
     {
@@ -13,5 +13,6 @@ namespace API.Configurations
         public string AMQPVIRTUALHOST { get; set; }
         public string AMQPEXCHANGENAME { get; set; }
         public string AMQPEXCHANGETYPE { get; set; }
+        public int AMQPPORT { get; internal set; }
     }
 }

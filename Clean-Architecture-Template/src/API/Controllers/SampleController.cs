@@ -34,6 +34,12 @@ public class SampleController : ControllerBase
         await sampleCreateService.CreateSample(dto);
     }
 
+    [HttpPost("publish-create-message")]
+    public async Task PublishCreateMessage([FromBody] SampleDtoV1 dto, ISampleCreateServiceV1 sampleCreateService)
+    {
+        await sampleCreateService.PublishCreateSampleMessage(dto);
+    }
+
     [HttpDelete("{id}")]
     public async Task DeleteSample(long id, ISampleDeleteServiceV1 sampleDeleteService)
     {
