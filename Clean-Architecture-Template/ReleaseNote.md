@@ -21,3 +21,7 @@
 - MakeFile updated
 - Serilog added
 - DB Transaction added and UnitOfWork removed
+
+## Version 2.1.0
+
+- RabbitMQ client added
